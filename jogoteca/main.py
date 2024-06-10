@@ -136,7 +136,7 @@ def atualizar_usuario(id):
     db.session.commit()
     return redirect(url_for('usuarios'))
 
-@app.route('/deletar_usuario/<int:id>')
+@app.route('/deletar_usuario/<int:id>', methods=['POST'])
 def deletar_usuario(id):
     if 'usuario_logado' not in session or session['usuario_logado'] != 'admin':
         flash('Acesso restrito ao administrador.')
