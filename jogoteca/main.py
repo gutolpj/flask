@@ -4,7 +4,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'gsr'  # chave de segurança
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/jogoteca'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/jogoteca'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -33,6 +33,15 @@ class Usuario(db.Model):
         self.nome = nome
         self.senha = senha
 
+# Função para criar o usuário admin se não existir
+def create_admin_user():
+    admin_user = Usuario.query.filter_by(nome='admin', deleted_at=None).first()
+    if not admin_user:
+        admin_user = Usuario('admin', 'admin')
+        db.session.add(admin_user)
+        db.session.commit()
+
+# Atualizando as rotas
 # Atualizando as rotas
 @app.route('/')
 def index():
@@ -151,7 +160,9 @@ def ola():
     return '<h1>Olá mundo</h1>'
 
 # Criação do banco de dados e tabelas
+# Criação do banco de dados e tabelas
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+        create_admin_user()
     app.run(host='0.0.0.0', debug=True)
