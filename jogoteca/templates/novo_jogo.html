@@ -1,7 +1,10 @@
 {% extends 'template.html' %}
 {% block conteudo %}
-<a class="btn btn-secondary" href="/">Voltar</a>
-      <form action="/criar" method="POST">
+<!-- <a class="btn btn-secondary" href="/">Voltar</a> -->
+<a class="btn btn-secondary" href="{{ url_for('index') }}">Voltar</a>
+
+<a class="btn btn-secondary" href="{{ url_for('logout') }}">Sair</a>
+      <form action="{{ url_for('criar') }}" method="POST">
         <fieldset>
           <div class="form-group">
             <label for="nome">Nome</label>
